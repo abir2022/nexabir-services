@@ -1,3 +1,5 @@
+![Nexabir Services](assets/banner.svg)
+
 # Nexabir Services — a service business storefront
 
 A small agency storefront: a service catalogue with three priced tiers each, a cart, checkout, order tracking, a client dashboard and an admin dashboard. Built as the website for a freelance services business rather than as a tutorial exercise.
