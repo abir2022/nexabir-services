@@ -1,16 +1,61 @@
-# React + Vite
+# Nexabir Services — a service business storefront
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small agency storefront: a service catalogue with three priced tiers each, a cart, checkout, order tracking, a client dashboard and an admin dashboard. Built as the website for a freelance services business rather than as a tutorial exercise.
 
-Currently, two official plugins are available:
+`React` · `Vite` · `Supabase (auth + data)` · `Netlify`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## What it does
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Area | Behaviour |
+|---|---|
+| **Catalogue** | Services (design, ERP integration, web work) each with Basic / Standard / Premium tiers, delivery time and revision counts |
+| **Cart** | Add a tier, keep it across navigation, review before checkout |
+| **Checkout** | Delivery details, order summary, order created against the signed-in client |
+| **Tracking** | Clients track an order by its ID without signing in |
+| **Client dashboard** | A signed-in client's own orders and their status |
+| **Admin dashboard** | Separate sign-in, order queue, service and site configuration |
+| **Maintenance mode** | A switch that puts the public site behind a holding page |
 
-## Expanding the ESLint configuration
+## Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+src/pages/            Home, CategoryPage, ServiceDetail, Checkout, TrackOrder,
+                      ClientDashboard, admin/Login, admin/Dashboard, Signup
+src/components/       Navbar, ServiceCard, ServiceModal, CartSidebar, DeliveryModal, ProtectedRoute
+src/context/          AuthContext, CartContext, ConfigContext, ServiceContext
+src/data.js           service catalogue and tier definitions
+src/supabase.js       client (URL + publishable key only)
+netlify.toml          SPA redirect + build config
+```
+
+## Running it
+
+```bash
+npm install
+npm run dev
+```
+
+Create `.env.local`:
+
+```
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_ANON_KEY=...
+```
+
+Both values are publishable by design. **Access control must come from Row Level Security in Supabase, not from hiding these** — an anon key is shipped to every visitor.
+
+## What I would change before taking real payments
+
+- Checkout records an order; it does not take money. Payment capture would go through a provider webhook server-side, never from the browser.
+- The admin role check happens in the UI; it must be enforced by RLS policies and server-side session checks.
+- Prices live in `src/data.js`, so they ship with the bundle. They belong in the database with an audit trail.
+
+## Notes
+
+Renamed from `nexabro` (a typo of the business name) — GitHub redirects the old URLs.
+
+---
+
+**Md. Abir Ul Islam** · [GitHub](https://github.com/abir2022) · [LinkedIn](https://www.linkedin.com/in/md-abir-ul-islam/)
